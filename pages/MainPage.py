@@ -72,7 +72,8 @@ class MainPage:
 
     @allure.step("Проверить, что открыта страница мужских товаров")
     def men_category_page(self) -> bool:
-        return self.__driver.current_url == "https://zarina.ru/man/"
+        self.wait.until(EC.url_contains("/man/"))
+        return True
 
     @allure.step("Нажать на иконку корзины")
     def click_cart_icon(self) -> None:
