@@ -14,18 +14,20 @@ class MainPage:
     auth_with_email_button = (
         'button.bg-white.text-main-black.border-light-grey'
     )
+    cart_button = 'button:has(img[alt="Cart"])'
+    menu_button = 'button:has(span[class*="relative"])'
+    auth_button = '//button[.//span[text()="Войти"]]'
+
     email_input = '#Email'
     password_input = '#password'
-    auth_button = '//button[.//span[text()="Войти"]]'
+    search_input = '[data-dgn-id="header-search-input"]'
 
     auth_modal = '.auth-content'
     cart_modal = 'div[role="dialog"]'
     menu_modal = 'div[role="dialog"]:has(nav a[href="/man/"])'
-    search_input = '[data-dgn-id="header-search-input"]'
+
     search_results = '.digi-products'
     men_category = 'a[href="/man/"]'
-    cart_button = 'button:has(img[alt="Cart"])'
-    menu_button = 'button:has(span[class*="relative"])'
 
     def __init__(self, driver: WebDriver) -> None:
         self.__url = 'https://zarina.ru'
@@ -84,7 +86,7 @@ class MainPage:
         self.wait_for_element(self.cart_modal)
         return True
 
-    @allure.step("Нажать на кнопку меню (бургер)")
+    @allure.step("Нажать на кнопку выпадающего меню")
     def click_menu_burger(self) -> None:
         self.__driver.find_element(By.CSS_SELECTOR, self.menu_button).click()
 
