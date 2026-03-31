@@ -1,6 +1,5 @@
 import allure
 import pickle
-import os
 from selenium.webdriver.remote.webdriver import WebDriver
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.common.by import By
@@ -19,7 +18,10 @@ class MainPage:
     auth_button = '//button[.//span[text()="Войти"]]'
     accept_city_modal_button = '//button[contains(text(), "верно")]'
     clothes_button = '//button[contains(text(), "Одежда")]'
-    view_all_button = '//a[contains(@href, "/catalog/clothes/") and contains(text(), "Смотреть все")]'
+    view_all_button = (
+        '//a[contains(@href, "/catalog/clothes/") '
+        'and contains(text(), "Смотреть все")]'
+        )
 
     email_input = '#Email'
     password_input = '#password'
@@ -84,8 +86,10 @@ class MainPage:
 
     @allure.step("Нажать на иконку корзины")
     def click_cart_icon(self) -> None:
-        cart_btn = self.__driver.find_element(By.CSS_SELECTOR, self.cart_button)
-        self.__driver.execute_script("arguments[0].scrollIntoView(true);", cart_btn)
+        cart_btn = self.__driver.find_element(
+            By.CSS_SELECTOR, self.cart_button)
+        self.__driver.execute_script(
+            "arguments[0].scrollIntoView(true);", cart_btn)
         self.__driver.execute_script("arguments[0].click();", cart_btn)
 
     @allure.step("Проверить, что открыто модальное окно корзины")
