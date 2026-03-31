@@ -72,8 +72,6 @@ def test_open_item_card(browser_without_modals):
 @allure.title("Проверка добавления товара в корзину из каталога")
 @allure.severity("critical")
 def test_add_first_item_to_cart_from_catalog(browser_without_modals):
-    from pages.MainPage import MainPage
-
     catalog = CatalogPage(browser_without_modals)
     catalog.open_catalog()
     item_name = catalog.add_first_item_to_cart_from_catalog()
@@ -84,3 +82,19 @@ def test_add_first_item_to_cart_from_catalog(browser_without_modals):
     assert main_page.cart_modal_is_visible()
     cart_item_name = catalog.item_is_in_cart(item_name)
     assert cart_item_name.lower() == item_name.lower()
+
+
+@allure.feature("Корзина")
+@allure.story("Оформление заказа")
+@allure.title("Проверка перехода на страницу оформления заказа")
+@allure.severity("critical")
+def test_checkout_page_opens(auth_browser):
+    driver = auth_browser
+    catalog = CatalogPage(driver)
+    main_page = MainPage(driver)
+
+    catalog.open_catalog()
+    catalog.add_first_item_to_cart_from_catalog()
+
+    main_page.click_cart_icon()
+    assert main_page.cart_modal_is_visible()

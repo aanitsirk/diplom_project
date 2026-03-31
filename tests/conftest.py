@@ -26,22 +26,20 @@ def browser_without_modals(browser):
     """Фикстура закрывает модальные окна (город и cookies)"""
     main_page = MainPage(browser)
     main_page.open()
-    main_page.close_all_modals()
+    main_page.accept_city_modal()
+    main_page.accept_cookies()
     return browser
 
 
 @pytest.fixture(scope="session")
-def auth_cookies(browser, data_provider):
-    """Фикстура для авторизованной сессии"""
+def auth_browser(browser, data_provider):
+    """Фикстура для авторизованного браузера (один раз на сессию)"""
     main_page = MainPage(browser)
     main_page.open()
     main_page.accept_city_modal()
 
-    # Пытаемся загрузить существующие cookies
-    if not main_page.auth_with_cookies():
-        # Если нет — авторизуемся заново
-        email = data_provider.get_email()
-        password = data_provider.get_password()
-        main_page.auth_with_email(email, password)
+    email = data_provider.get_email()
+    password = data_provider.get_password()
+    main_page.auth_with_email(email, password)
 
-    return main_page
+    return browser

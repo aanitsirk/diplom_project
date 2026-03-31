@@ -18,6 +18,8 @@ class MainPage:
     menu_button = 'button:has(span[class*="relative"])'
     auth_button = '//button[.//span[text()="Войти"]]'
     accept_city_modal_button = '//button[contains(text(), "верно")]'
+    clothes_button = '//button[contains(text(), "Одежда")]'
+    view_all_button = '//a[contains(@href, "/catalog/clothes/") and contains(text(), "Смотреть все")]'
 
     email_input = '#Email'
     password_input = '#password'
@@ -82,7 +84,9 @@ class MainPage:
 
     @allure.step("Нажать на иконку корзины")
     def click_cart_icon(self) -> None:
-        self.__driver.find_element(By.CSS_SELECTOR, self.cart_button).click()
+        cart_btn = self.__driver.find_element(By.CSS_SELECTOR, self.cart_button)
+        self.__driver.execute_script("arguments[0].scrollIntoView(true);", cart_btn)
+        self.__driver.execute_script("arguments[0].click();", cart_btn)
 
     @allure.step("Проверить, что открыто модальное окно корзины")
     def cart_modal_is_visible(self) -> bool:
@@ -98,6 +102,15 @@ class MainPage:
     def menu_modal_is_visible(self) -> bool:
         self.wait_for_element(self.menu_modal)
         return True
+
+    @allure.step("Открыть каталог женской одежды")
+    def go_to_women_catalog(self) -> None:
+        """Открывает каталог женской одежды через меню"""
+        self.wait.until(EC.element_to_be_clickable(
+            (By.XPATH, self.clothes_button))).click()
+
+        self.wait.until(EC.element_to_be_clickable(
+            (By.XPATH, self.view_all_button))).click()
 
     @allure.step("Авторизация через email: {email}")
     def auth_with_email(self, email: str, password: str) -> None:
@@ -129,39 +142,8 @@ class MainPage:
         current_cookies = [c for c in cookies if c.get('name') == 'consent']
         if not current_cookies:
             self.__driver.add_cookie(cookie_policy)
-            with allure.step("Добавлена cookie consent=true"):
-                pass
-        else:
-            with allure.step("Cookie consent уже существует"):
-                pass
 
     @allure.step("Принять выбор города и закрыть модальное окно")
     def accept_city_modal(self) -> None:
-        """Закрывает модальное окно с предложением выбрать город"""
-        elements = self.__driver.find_elements(
-            By.XPATH, self.accept_city_modal_button)
-        if elements:
-            with allure.step("Нажать кнопку 'Верно'"):
-                elements[0].click()
-        else:
-            with allure.step("Модальное окно города не найдено, пропускаем"):
-                pass
-
-    @allure.step("Закрыть все модальные окна")
-    def close_all_modals(self) -> None:
-        """Закрывает все всплывающие окна"""
-        self.accept_city_modal()
-        self.accept_cookies()
-
-    @allure.step("Авторизация через сохраненные cookies")
-    def auth_with_cookies(self) -> bool:
-        """Загружает cookies и возвращает True, если авторизация успешна"""
-        if os.path.exists(self.__cookies_file):
-            with open(self.__cookies_file, "rb") as f:
-                cookies = pickle.load(f)
-                for cookie in cookies:
-                    self.__driver.add_cookie(cookie)
-            self.__driver.refresh()
-            return True
-        else:
-            return False
+        """Подтверждает выбор города"""
+        self.__driver.find_elements(By.XPATH, self.accept_city_modal_button)

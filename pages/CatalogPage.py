@@ -21,19 +21,21 @@ class CatalogPage:
 
     def __init__(self, driver: WebDriver) -> None:
         self.__driver = driver
-        self.__url = 'https://zarina.ru/catalog/'
+        self.__url = 'https://zarina.ru/catalog/clothes/'
         self.wait = WebDriverWait(driver, 10)
 
     def wait_for_element(self, selector: str) -> None:
         self.wait.until(EC.presence_of_element_located(
             (By.CSS_SELECTOR, selector)))
 
-    @allure.step("Открыть страницу каталога")
+    @allure.step("Открыть страницу каталога через главную страницу")
     def open_catalog(self) -> None:
         """Открывает страницу каталога"""
-        self.__driver.get(self.__url)
-
         main_page = MainPage(self.__driver)
+        main_page.open()
+        main_page.click_menu_burger()
+        main_page.go_to_women_catalog()
+
         main_page.accept_city_modal()
 
         self.wait.until(EC.presence_of_all_elements_located(
@@ -58,12 +60,6 @@ class CatalogPage:
 
     @allure.step("Добавить первый товар из каталога в корзину")
     def add_first_item_to_cart_from_catalog(self) -> str:
-        """
-        Добавляет первый товар в корзину со страницы каталога.
-        Наводит на изображение, ждет появления кнопки корзины, нажимает,
-        выбирает первый доступный размер.
-        Возвращает название товара.
-        """
         items = self.wait.until(EC.presence_of_all_elements_located(
             (By.CSS_SELECTOR, self.item_cards)))
         first_item = items[0]
