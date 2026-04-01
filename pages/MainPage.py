@@ -5,6 +5,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support import expected_conditions as EC
+from config.settings import settings
 
 
 class MainPage:
@@ -35,10 +36,10 @@ class MainPage:
     men_category = 'a[href="/man/"]'
 
     def __init__(self, driver: WebDriver) -> None:
-        self.__url = 'https://zarina.ru'
+        self.__url = settings.base_url
         self.__driver = driver
         self.wait = WebDriverWait(driver, 10)
-        self.__cookies_file = 'cookies.pkl'
+        self.__cookies_file = settings.cookies_file
 
     def wait_for_element(self, selector: str) -> None:
         """Ожидает появления элемента на странице"""

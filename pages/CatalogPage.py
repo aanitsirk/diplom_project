@@ -4,6 +4,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.action_chains import ActionChains
+from config.settings import settings
 from pages.MainPage import MainPage
 
 
@@ -21,7 +22,7 @@ class CatalogPage:
 
     def __init__(self, driver: WebDriver) -> None:
         self.__driver = driver
-        self.__url = 'https://zarina.ru/catalog/clothes/'
+        self.__url = f'{settings.base_url}/catalog/clothes/'
         self.wait = WebDriverWait(driver, 10)
 
     def wait_for_element(self, selector: str) -> None:

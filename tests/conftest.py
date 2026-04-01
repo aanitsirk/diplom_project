@@ -1,6 +1,7 @@
 import pytest
 from selenium import webdriver
 from pages.MainPage import MainPage
+from api.api_client import ZarinaApi
 from testdata.data_provider import DataProvider
 
 
@@ -43,3 +44,29 @@ def auth_browser(browser, data_provider):
     main_page.auth_with_email(email, password)
 
     return browser
+
+
+@pytest.fixture
+def api_client(data_provider):
+    """Фикстура для API-клиента с авторизацией через API"""
+    client = ZarinaApi()
+    email = data_provider.get_email()
+    password = data_provider.get_password()
+
+    client.auth_by_email(email, password)
+
+    return client
+
+
+@pytest.fixture
+def api_client_unauthorized():
+    """Фикстура для неавторизованного API-клиента"""
+    return ZarinaApi()
+
+
+@pytest.fixture
+def cart_with_item(api_client):
+    """Фикстура добавляет товар в корзину и возвращает клиент"""
+    barcode = "4610517829009"
+    api_client.add_to_cart(barcode, 1)
+    return api_client

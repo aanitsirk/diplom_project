@@ -1,12 +1,15 @@
 import allure
 from pages.MainPage import MainPage
 from pages.CatalogPage import CatalogPage
+import pytest
+
+pytestmark = pytest.mark.ui
 
 
 @allure.feature("Главная страница")
-@allure.story("UI тесты")
+@allure.story("Авторизация")
 @allure.title("Проверка открытия модального окна авторизации")
-@allure.severity("blocker")
+@allure.severity("critical")
 def test_auth_modal_opens(browser_without_modals):
     main_page = MainPage(browser_without_modals)
     main_page.open()
@@ -15,7 +18,7 @@ def test_auth_modal_opens(browser_without_modals):
 
 
 @allure.feature("Главная страница")
-@allure.story("UI тесты")
+@allure.story("Корзина")
 @allure.title("Проверка открытия модального окна корзины")
 @allure.severity("critical")
 def test_cart_modal_opens(browser_without_modals):
@@ -26,7 +29,7 @@ def test_cart_modal_opens(browser_without_modals):
 
 
 @allure.feature("Главная страница")
-@allure.story("UI тесты")
+@allure.story("Меню")
 @allure.title("Проверка открытия модального окна меню")
 @allure.severity("critical")
 def test_menu_modal_opens(browser_without_modals):
@@ -37,7 +40,7 @@ def test_menu_modal_opens(browser_without_modals):
 
 
 @allure.feature("Главная страница")
-@allure.story("UI тесты")
+@allure.story("Поиск")
 @allure.title("Проверка поиска товаров")
 @allure.severity("high")
 def test_search_items(browser_without_modals):
@@ -48,7 +51,7 @@ def test_search_items(browser_without_modals):
 
 
 @allure.feature("Главная страница")
-@allure.story("UI тесты")
+@allure.story("Навигация")
 @allure.title("Проверка открытия каталога мужских товаров")
 @allure.severity("critical")
 def test_men_category_opens(browser_without_modals):
@@ -59,6 +62,7 @@ def test_men_category_opens(browser_without_modals):
 
 
 @allure.feature("Каталог")
+@allure.story("Карточка товара")
 @allure.title("Проверка открытия карточки товара")
 @allure.severity("high")
 def test_open_item_card(browser_without_modals):
@@ -69,6 +73,7 @@ def test_open_item_card(browser_without_modals):
 
 
 @allure.feature("Каталог")
+@allure.story("Корзина")
 @allure.title("Проверка добавления товара в корзину из каталога")
 @allure.severity("critical")
 def test_add_first_item_to_cart_from_catalog(browser_without_modals):
